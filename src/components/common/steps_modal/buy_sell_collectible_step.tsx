@@ -152,6 +152,7 @@ const mapStateToProps = (state: StoreState): StateProps => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
+        // memo: order
         submitCollectibleOrder: (signedOrder: SignedOrder) => dispatch(submitCollectibleOrder(signedOrder)),
         createSignedCollectibleOrder: (
             collectible: Collectible,
@@ -166,9 +167,6 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-const BuySellCollectibleStepContainer = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(BuySellCollectibleStep);
+const BuySellCollectibleStepContainer = connect(mapStateToProps, mapDispatchToProps)(BuySellCollectibleStep);
 
 export { BuySellCollectibleStep, BuySellCollectibleStepContainer };

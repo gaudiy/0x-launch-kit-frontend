@@ -76,6 +76,8 @@ export class Relayer {
         return result.records.map(record => record.order);
     }
 
+    // memo: オーダーの実行
+    // リレイヤーに署名済みのオーダーを投げている interface SignedOrder extends Order
     public async submitOrderAsync(order: SignedOrder): Promise<void> {
         await this._rateLimit();
         return this._client.submitOrderAsync(order);

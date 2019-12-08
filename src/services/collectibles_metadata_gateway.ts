@@ -27,12 +27,16 @@ export class CollectiblesMetadataGateway {
         // Step 1: Get all sell orders in the relayer
         let orders: any[] = [];
         try {
+            // memo: relayerから指定コントラクトのオーダーを取得
+            // パラメータは第一が対象のNFTのコントラクトアドレス、
+            // 第二はWethのアドレス（networkにあわせて
             orders = await this._relayer.getSellCollectibleOrdersAsync(COLLECTIBLE_ADDRESS, wethAddress);
         } catch (err) {
             logger.error(err);
             throw err;
         }
 
+        // memo: オーダーをTokenId毎に管理
         const tokenIdToOrder = orders.reduce<{ [tokenId: string]: SignedOrder }>((acc, order) => {
             const { tokenId } = assetDataUtils.decodeERC721AssetData(order.makerAssetData);
             acc[tokenId.toString()] = order;
@@ -42,6 +46,10 @@ export class CollectiblesMetadataGateway {
         // Step 2: Get all the user's collectibles and add the order
         let collectiblesWithOrders: Collectible[] = [];
         if (userAddress) {
+            // memo: ユーザーのアドレスに紐づくアセットを取得
+            // 0x-launch-kit-frontend/src/services/collectibles_metadata_sources/opensea.ts
+            // ここではopenseaから取得している（設定で指定している
+            // openseaだとロゴ掲載とリンクがいるので、自前でtokenURI取るやつ作らないとかも
             const userCollectibles = await this._source.fetchAllUserCollectiblesAsync(userAddress);
             collectiblesWithOrders = userCollectibles.map(collectible => {
                 if (tokenIdToOrder[collectible.tokenId]) {

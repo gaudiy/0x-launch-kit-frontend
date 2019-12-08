@@ -88,6 +88,7 @@ class BuySellCollectibleStep extends React.Component<Props, State> {
                 doneFooterCaption={doneFooterCaption}
                 buildStepsProgress={buildStepsProgress}
                 estimatedTxTimeMs={estimatedTxTimeMs}
+                // memo: _confirmOnMetamaskBuy
                 runAction={isBuy ? this._confirmOnMetamaskBuy : this._confirmOnMetamaskSell}
                 showPartialProgress={true}
             />
